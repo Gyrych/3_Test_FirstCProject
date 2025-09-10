@@ -1,0 +1,58 @@
+{
+  "name": "radxa-gpio",
+  "version": "0.1.0",
+  "description": "Control RK3568 GPIO via libgpiod and expose MCP tools for LLMs.",
+  "capabilities": {
+    "tools": {}
+  },
+  "settings": {},
+  "server": {
+    "transport": {
+      "type": "sse",
+      "url": "http://localhost:8000/mcp"
+    }
+  },
+  "tools": [
+    {
+      "name": "gpio_write",
+      "description": "Set GPIO pin level via libgpiod",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "pin": {"type": "integer", "minimum": 0},
+          "value": {"type": "integer", "enum": [0, 1]},
+          "chip": {"type": "string", "default": "gpiochip0"}
+        },
+        "required": ["pin", "value"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "gpio_read",
+      "description": "Read GPIO pin level via libgpiod",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "pin": {"type": "integer", "minimum": 0},
+          "chip": {"type": "string", "default": "gpiochip0"}
+        },
+        "required": ["pin"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "gpio_set_mode",
+      "description": "Configure GPIO pin direction (in/out) via libgpiod",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "pin": {"type": "integer", "minimum": 0},
+          "mode": {"type": "string", "enum": ["in", "out"]},
+          "chip": {"type": "string", "default": "gpiochip0"}
+        },
+        "required": ["pin", "mode"],
+        "additionalProperties": false
+      }
+    }
+  ]
+}
